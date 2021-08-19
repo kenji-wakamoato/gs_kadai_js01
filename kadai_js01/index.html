@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <!-- css読み込み -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    
+    <title>ドラゴンボールジャン拳</title>
+</head>
+<body>
+    <!-- エンディングを最初に設定しclass名noneをつける -->
+    <div class="ending none">
+        <!-- エンディング画像一式、widthを指定 -->
+        <div class="syenron"><img  src="img/dragon.png" width=2000px alt=""></div>
+        <div class="uron"><img src="img/gyaru.png" width=600px alt=""></div>
+        <div class="panty"><img src="img/pantu.jpg" width=600px alt=""></div>
+        <div class="uron_end"><img src="img/uron_end.jpeg" width=2000px alt=""></div>
+    </div>
+<div class="haikei">
+     <div class="main_title"><a href="https://fontmeme.com/ja/font-dragon-ball-z/"><img src="https://fontmeme.com/permalink/210818/fc636856a6b76cb95483e8caa4a314d8.png" alt="font-dragon-ball-z" border="0"></a>
+    </div>
+    
+
+    
+    
+    <!-- 初期画面 -->
+    <div class="start_screen">
+        <button class="start_btn"><img src="img/db_rogo.png" alt=""></button>
+    </div>
+    <main>
+        <div class="game">
+    <div class="main_box"><img class="main_contents" src="img/jyanken.jpeg"width=600px alt="">
+        <img class="result" src=""width=300px alt="">
+    </div>
+    
+    <!-- じゃんけん素材３点表示 -->
+    <div class="j_box">
+    <ul id="jyanken">
+       <li id="jyanken_gu"><img class="gu" src="img/gu_.jpeg" alt=""></li>
+       <li id="jyanken_tyoki"><img class="tyoki" src="img/tyoki_.jpeg" alt=""> </li>
+       <li id="jyanken_pa"><img class="pa" src="img/pa_.jpeg" alt=""> </li>
+    </ul>
+    </div>
+    <div id="syouhai">
+        
+    </div>
+    <!-- ボールの画像７個 -->
+    <div id="dragon_ball">  
+        <img class="db1 none" src="img/db_1.png" width=150px alt="">
+        <img class="db2 none" src="img/db_2.png" width=150px  alt="">
+        <img class="db3 none" src="img/db_3.png" width=150px  alt="">
+        <img class="db4 none" src="img/db_4.png" width=150px  alt="">
+        <img class="db5 none" src="img/db_5.png" width=150px  alt="">
+        <img class="db6 none" src="img/db_6.png" width=150px  alt="">
+        <img class="db7 none" src="img/db_7.png" width=150px  alt="">
+    </div>
+        <p id="echo"> </p>
+    </div>
+    </main>
+
+
+    <!-- cssで悟空画像に動きをつける -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        // 勝敗のカウント
+        let count = 0;
+
+
+
+
+
+    // ゲームスタートの画面の制作。スタートボタンクリックでじゃんけんスタート
+        $(".start_btn").on("click",function(){
+            document.getElementsByClassName("game")[0].style.display = "block";
+            document.getElementsByClassName("start_btn")[0].style.display = "none";
+
+            
+        });
+        // 4,グーチョキパーをクリックしたら、メイン画像が２秒動いて、悟空の出し手を表示
+      function start_jyanken(val){
+         // 勝ち負け画像を消す
+         $('.result').attr('src', "");
+            // 画像を変数として宣言する
+        const main_contents = $('.main_contents');
+        // 勝敗後にジャン拳画像を再度出す処理→勝敗画像を消し、じゃんけん画像を表示
+        // ジャン拳画像がロードされたら、zoominというクラスを追加する→cssのアニメーションが動く
+        main_contents.attr('src',"img/jyanken.jpeg" ).on('load', function() { 
+          $(this).addClass("zoom-in");
+        });
+        // ２秒間待ってから処理をする
+        setTimeout(function(){
+            jyanken(val);
+        },2000);
+        // ２回目以降もzoominが動くように消すおまじない
+        main_contents.removeClass("zoom-in");  
+      }  
+
+
+
+    // じゃんけんアプリを実装 jsで
+    // $("#jyanken").on("click",function(){
+        $("#jyanken_gu").on("click",function(){
+            start_jyanken(1);
+             
+        });
+
+        $("#jyanken_tyoki").on("click",function(){
+            start_jyanken(2);
+        });
+        $("#jyanken_pa").on("click",function(){
+            start_jyanken(3);
+        });
+
+        function jyanken(y_attack){
+            // １、乱数を作るグーチョキパー
+        const r  = Math.ceil( Math.random()*3 );
+        // ２、if分岐処理
+        let view = '';
+        if(r==1){
+            view = 'img/db_gu.png';
+        }
+        if(r==2){
+            view = 'img/db_tyoki.png';
+        }
+        if(r==3){
+            view = 'img/db_pa.png';
+        }
+        // // ３、切り替え処理
+        
+         $('.main_contents').attr('src', view);
+        
+        
+        if (r === y_attack) {
+                // Result_end = "あいこです";
+                result="img/draw.png";
+            } else if(r === 1 && y_attack === 3) {
+                count++; 
+                // Result_end = "あなたの【勝ち】";
+                result="img/win.png";
+            }else if(r === 2 && y_attack === 1) {
+                count++; 
+                // Result_end = "あなたの【勝ち】";
+                result="img/win.png";
+            }else if(r === 3 && y_attack === 2) {
+                count++; 
+                // Result_end = "あなたの【勝ち】";
+                result="img/win.png";
+            }else {
+                
+                // Result_end = "あなたの【負け】";
+                result="img/lose.png";
+            }
+            $('.result').attr('src', result);
+            document.getElementById("syouhai").innerHTML=count;
+            // countとdbが同数の時noneをremoveする
+            $('.db' + count).removeClass("none");
+            // ７勝したら、以下の処理を実行
+            if(count >= 7) {
+                
+                $('.ending').removeClass("none");//noneを解除
+                $('.ending').delay(2000).queue(function () {//2秒後に処理を実行
+                    $(this).addClass("ending-show");//白背景を黒に
+                    $('.syenron').delay(4000).queue(function () {//4秒後に処理を実行
+                        $(this).addClass("dragon-show");//神龍のcssを
+                        $('.uron').delay(4000).queue(function () {//4秒後に処理を実行
+                            $(this).addClass("woron-show");//ウーロンのcssを
+                            $('.panty').delay(3000).queue(function () {//3秒後に処理を実行
+                                $(this).addClass("snowfall");//ギャルパンのcssを
+                                $('.syenron').addClass("fade-out");//消す
+                                $('.uron').addClass("fade-out")//消す
+                                
+                                $('.uron_end').delay(15000).queue(function (){
+                                    $('.panty').addClass("fade-out")//消す
+                                    $(this).addClass("ending-uron");
+                                })
+                            });
+                        });
+                    });
+                });
+
+            
+            } 
+
+            
+
+        }
+    
+    
+    
+    // 悟空の出し手はメイン画像と差し替えて表示→同時に勝敗を表示する
+    // １回勝つごとにドラゴンボールが１個もらえる。
+    // ７個集めると神龍が出現
+    
+     
+
+    
+    </script>
+</div> 
+</body>
+</html>
